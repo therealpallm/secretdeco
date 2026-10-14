@@ -1,0 +1,45 @@
+name: Build Drew AI for Mac
+
+"on":
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 40
+    steps:
+      - name: Download this project's source
+        uses: actions/checkout@v7
+
+      - name: Install compiler on GitHub's Mac
+        shell: bash
+        run: |
+          brew install llvm cmake
+          echo "$(brew --prefix llvm)/bin" >> "$GITHUB_PATH"
+
+      - name: Test the local helper without making AI calls
+        shell: bash
+        run: python3 -m unittest discover -s helper -p 'test_*.py' -v
+
+      - name: Build the mod for Intel and Apple Silicon
+        id: mod
+        uses: geode-sdk/build-geode-mod@a0f7676e6fcd1a584f6d0c1c800239008412defc
+        with:
+          sdk: given
+          target: MacOS
+          bindings-ref: f8aec5d1f3df76d840dfd2609f02cef30dc6efdf
+          configure-args: '-DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"'
+          use-lto: false
+          ccache-variant: ''
+          use-cpm-cache: false
+
+      - name: Make the finished mod downloadable
+        uses: actions/upload-artifact@v7
+        with:
+          name: Drew-AI-Mac
+          path: ${{ steps.mod.outputs.build-output }}/*.geode
+          if-no-files-found: error
+          retention-days: 7

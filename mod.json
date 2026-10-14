@@ -1,0 +1,20 @@
+{
+  "geode": "5.11.1",
+  "gd": {"mac": "2.2081"},
+  "id": "drew.editor-ai",
+  "name": "Drew Editor AI",
+  "version": "v0.1.0",
+  "developer": "Drew",
+  "description": "Generate basic block plans with a local AI helper. Preview and apply in the editor.",
+  "dependencies": [
+    {"id": "geode.node-ids", "version": ">=1.23.3", "importance": "required"}
+  ],
+  "settings": {
+    "helper-token": {
+      "name": "Local helper token",
+      "description": "Paste the pairing token printed by Start-Demo.command or the AI helper. This is not your OpenAI API key.",
+      "type": "string",
+      "default": ""
+    }
+  }
+}
