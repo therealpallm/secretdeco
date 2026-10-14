@@ -1,4 +1,4 @@
-name: Build Drew AI for Mac
+name: .github/workflows/build-mac.yml
 
 "on":
   workflow_dispatch:
